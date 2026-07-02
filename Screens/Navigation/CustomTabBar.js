@@ -69,7 +69,7 @@ export default CustomTabBar;
 const styles = StyleSheet.create({
   wrapper: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 15,
     width: '100%',
     backgroundColor: 'transparent',
   },
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
   inactiveContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 14,
   },
   floatingButton: {
     position: 'absolute',
