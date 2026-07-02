@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import SplashScreen_bg from "../Utility/Assets/SplashScreen_Bg.svg";
 import UBBS_Image from "../Utility/Assets/UBBS_Image.svg";
 
@@ -10,6 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 const SplashScreen = () => {
+  const insets = useSafeAreaInsets();
   const scale = useSharedValue(0.5);
   const opacity = useSharedValue(0);
 
@@ -38,8 +40,8 @@ const SplashScreen = () => {
         </Animated.View>
       </View>
 
-      {/* 📝 Bottom Text */}
-      <View style={styles.bottomTextContainer}>
+      {/* 📝 Bottom Text - with safe area padding */}
+      <View style={[styles.bottomTextContainer, { bottom: insets.bottom + 50 }]}>
         <Text style={styles.text}>
           Change Your Life with US
         </Text>

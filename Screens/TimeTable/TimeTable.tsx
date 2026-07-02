@@ -7,11 +7,12 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CommonScreen from '../Commonscreen/CommonScreen';
 
 const TimetableScreen = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const days = [
     { date: '13', day: 'Today', active: true },
     { date: '14', day: 'Tue', active: false },
@@ -123,7 +124,7 @@ const TimetableScreen = ({ navigation }) => {
           data={classData}
           keyExtractor={(item) => item.id}
           renderItem={renderClassCard}
-          contentContainerStyle={styles.scrollPadding}
+          contentContainerStyle={[styles.scrollPadding, { paddingBottom: insets.bottom + 30 }]}
           showsVerticalScrollIndicator={false}
         />
       </View>

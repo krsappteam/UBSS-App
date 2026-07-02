@@ -7,7 +7,7 @@ import {
   StatusBar,
   Dimensions,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native'; // Added navigation hook
 
@@ -20,12 +20,13 @@ const { width } = Dimensions.get('window');
 
 const StudentCard = () => {
   const navigation = useNavigation(); // Initializing navigation
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.mainContainer}>
       <StatusBar barStyle="light-content" backgroundColor="#A11C3A" />
       
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView style={styles.safeArea} edges={['top']}>
         {/* Header */}
         <View style={styles.header}>
           {/* Functional Go Back Button */}
@@ -43,7 +44,7 @@ const StudentCard = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.content}>
+        <View style={[styles.content, { paddingBottom: insets.bottom + 20 }]}>
           {/* Unified ID Card */}
           <View style={styles.idCard}>
             {/* 1. Header Section */}

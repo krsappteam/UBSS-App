@@ -9,7 +9,7 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Svg, { Circle, Path, G } from 'react-native-svg';
 import CommonScreen from '../Commonscreen/CommonScreen'; // Using your LinearGradient wrapper
@@ -36,6 +36,7 @@ const UserIcon = ({ size = 30 }) => (
 
 const ChatScreen = ({ navigation }) => {
   const [inputText, setInputText] = useState('');
+  const insets = useSafeAreaInsets();
 
   const CHAT_DATA = [
     { id: '1', type: 'system', text: 'Today' },
@@ -115,8 +116,8 @@ const ChatScreen = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
         />
         
-        {/* Input Bar */}
-        <View style={styles.inputBar}>
+        {/* Input Bar - with bottom safe area padding */}
+        <View style={[styles.inputBar, { paddingBottom: insets.bottom + 10 }]}>
           <TouchableOpacity style={styles.iconBtn}>
             <MaterialCommunityIcons name="plus" size={26} color="#757575" />
           </TouchableOpacity>

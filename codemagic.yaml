@@ -2,49 +2,21 @@ workflows:
   ios-workflow:
     name: iOS Workflow
 
-    integrations:
-      app_store_connect: Codemagic
-
     environment:
       node: 22.11.0
       xcode: latest
       cocoapods: default
 
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: au.edu.gca.ubss
-
     scripts:
-      - name: Install dependencies
+      - name: Install npm dependencies
         script: |
-          npm install --legacy-peer-deps
+          npm install
 
-      - name: Install CocoaPods
+      - name: Install CocoaPods dependencies
         script: |
           cd ios
           pod install
 
-      - name: Set up code signing
-        script: |
-          keychain initialize
-          app-store-connect fetch-signing-files "au.edu.gca.ubss" \
-            --type IOS_APP_STORE \
-            --create
-          keychain add-certificates
-          xcode-project use-profiles
-
-      - name: Build IPA
-        script: |
-          xcode-project build-ipa \
-            --workspace ios/UBSS.xcworkspace \
-            --scheme UBSS
-
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
-
-    publishing:
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: true
-        submit_to_app_store: false
