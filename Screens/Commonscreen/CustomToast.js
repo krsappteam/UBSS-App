@@ -8,7 +8,8 @@ import Animated, {
   withDelay,
   runOnJS 
 } from 'react-native-reanimated';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { AlertCircle, CheckmarkCircle } from '../Utility/SvgIcons';
+
 
 const { width } = Dimensions.get('window');
 
@@ -41,11 +42,12 @@ const CustomToast = ({ message, visible, onHide, type = 'error' }) => {
 
   return (
     <Animated.View style={[styles.toastContainer, animatedStyle, styles[type]]}>
-      <Ionicons 
-        name={type === 'error' ? "alert-circle" : "checkmark-circle"} 
-        size={24} 
-        color="white" 
-      />
+      {type === 'error' ? (
+        <AlertCircle color="#fff" size={24} />
+      ) : (
+        <CheckmarkCircle color="#fff" size={24} />
+      )}
+
       <Text style={styles.toastText}>{message}</Text>
     </Animated.View>
   );
