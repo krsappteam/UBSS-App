@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import AppNavigation from "./Screens/Navigation/Navigation";
+import AppNavigation from "./Screens/NewScreens/Navigation/Navigation";
 
 const App = () => {
   return (
