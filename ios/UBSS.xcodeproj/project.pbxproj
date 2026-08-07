@@ -110,8 +110,10 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
+				A1B2C3D4E5F60718293A4B5C /* Strip Bitcode from Zendesk Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
 			);
+
 			buildRules = (
 			);
 			dependencies = (
@@ -237,7 +239,28 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UBSS/Pods-UBSS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A1B2C3D4E5F60718293A4B5C /* Strip Bitcode from Zendesk Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Bitcode from Zendesk Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Apple no longer accepts bitcode in App Store submissions (error 90482).\n# The Zendesk MessagingSDK and ChatSDK frameworks ship with bitcode slices, so we\n# strip bitcode from them after they are embedded into the app bundle.\nBITCODE_STRIP=\"${TOOLCHAIN_DIR}/usr/bin/bitcode_strip\"\nFRAMEWORKS_DIR=\"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfor framework in MessagingSDK ChatSDK; do\n  binary=\"${FRAMEWORKS_DIR}/${framework}.framework/${framework}\"\n  if [ -f \"${binary}\" ]; then\n    echo \"Stripping bitcode from ${framework}\"\n    \"${BITCODE_STRIP}\" -r \"${binary}\" -o \"${binary}\"\n  fi\ndone\n";
+
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
+
 
 /* Begin PBXSourcesBuildPhase section */
 		13B07F871A680F5B00A75B9A /* Sources */ = {
