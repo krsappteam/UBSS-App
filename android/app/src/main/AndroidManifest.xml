@@ -23,5 +23,18 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+
+      <!--
+        Custom Zendesk messaging activity (lives in the react-native-zendesk-chat module). It
+        extends zendesk.messaging.MessagingActivity and opts out of edge-to-edge so the message
+        input box stays visible above the keyboard. The RNZendeskChatModule redirects the chat
+        intent to this activity.
+      -->
+      <activity
+        android:name="com.taskrabbit.zendesk.CustomMessagingActivity"
+        android:windowSoftInputMode="adjustResize"
+        android:exported="false" />
+
     </application>
+
 </manifest>

@@ -6,10 +6,24 @@ buildscript {
         targetSdkVersion = 36
         ndkVersion = "27.1.12297006"
         kotlinVersion = "2.1.20"
+        // Zendesk Chat SDK versions.
+        // The react-native-zendesk-chat module (v0.4.1) and chat 3.1.0 are written against
+        // the messaging SDK API where MessagingActivity/MessagingConfiguration live in the
+        // `zendesk.messaging` package (messaging 5.1.0/5.2.0). Newer messaging versions
+        // (5.3.0+) moved these classes to `zendesk.classic.messaging`, which breaks the module.
+        // messaging 5.2.0 depends on the unavailable com.google.android:flexbox:2.0.1, so we
+        // substitute it with the available com.google.android.flexbox:flexbox:3.0.0 in the app.
+        // (5.8.0 requires compileSdk 37, so we stay on 5.2.0 for compileSdk 36.)
+        zendeskChatVersion = "3.1.0"
+        zendeskMessagingVersion = "5.2.0"
+
+
     }
+
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://zendesk.jfrog.io/zendesk/repo' }
     }
     dependencies {
         classpath("com.android.tools.build:gradle")
@@ -18,4 +32,25 @@ buildscript {
     }
 }
 
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://zendesk.jfrog.io/zendesk/repo' }
+    }
+
+    // The Zendesk messaging SDK 5.2.0 (required by react-native-zendesk-chat) declares a dependency
+    // on com.google.android:flexbox:2.0.1, which does not exist in any repository. The flexbox
+    // library is actually published under com.google.android.flexbox:flexbox (3.0.0 is available on
+    // Google Maven and has the same com.google.android.flexbox package). Substitute the unavailable
+    // artifact with the available one so dependency resolution succeeds for all subprojects.
+    configurations.all {
+        resolutionStrategy.dependencySubstitution {
+            substitute module('com.google.android:flexbox') using module('com.google.android.flexbox:flexbox:3.0.0')
+        }
+    }
+}
+
+
 apply plugin: "com.facebook.react.rootproject"
+

@@ -158,7 +158,7 @@ const StudentIDScreen = ({ navigation }: any) => {
             <View style={styles.cardHeaderRow}>
               <View style={styles.cardLogoSection}>
                 <Text style={styles.cardLogoText}>UBSS</Text>
-                <Text style={styles.cardLogoSubtext}>University of Business & Social Sciences</Text>
+                <Text style={styles.cardLogoSubtext}>Universal Bussiness School</Text>
               </View>
               <View style={styles.cardTypeBadge}>
                 <Text style={styles.cardTypeText}>STUDENT</Text>

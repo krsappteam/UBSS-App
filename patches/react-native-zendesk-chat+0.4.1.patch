@@ -1,0 +1,35 @@
+diff --git a/node_modules/react-native-zendesk-chat/android/build.gradle b/node_modules/react-native-zendesk-chat/android/build.gradle
+index 6ef11e2..6afcc8a 100644
+--- a/node_modules/react-native-zendesk-chat/android/build.gradle
++++ b/node_modules/react-native-zendesk-chat/android/build.gradle
+@@ -6,8 +6,8 @@ def safeExtGet(prop, fallback) {
+ 
+ buildscript {
+   repositories {
+-    jcenter()
+     google()
++    mavenCentral()
+   }
+ 
+   dependencies {
+@@ -15,6 +15,7 @@ buildscript {
+   }
+ }
+ 
++
+ android {
+     compileSdkVersion safeExtGet('compileSdkVersion', 28)
+     buildToolsVersion safeExtGet('buildToolsVersion', "28.0.3")
+@@ -29,11 +30,11 @@ android {
+ 
+ repositories {
+   mavenCentral()
+-  jcenter()
+   google()
+   maven { url 'https://zendesk.jfrog.io/zendesk/repo' }
+ }
+ 
++
+ dependencies {
+   implementation "com.facebook.react:react-native:+"
+ 

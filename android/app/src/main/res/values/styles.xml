@@ -4,6 +4,17 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+
+        <!--
+          Brand colors. These are consumed by the Zendesk Chat SDK's native UI (toolbar background,
+          send button, links, etc.) via ?attr/colorPrimary. Without them, the SDK falls back to the
+          DayNight defaults, which in dark mode resolve to a light color and cause white text on a
+          white background (invisible "Contact us" title, send button, and message text).
+          Matches the app's primary color (#3f73b9) from Screens/DesignSystem.tsx.
+        -->
+        <item name="colorPrimary">#3f73b9</item>
+        <item name="colorPrimaryDark">#2f5a94</item>
+        <item name="colorAccent">#3f73b9</item>
     </style>
 
 </resources>

@@ -117,6 +117,7 @@ buildTypes {
 }
 
 dependencies {
+
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
@@ -125,4 +126,9 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // Zendesk Chat SDK
+    api group: 'com.zendesk', name: 'chat', version: '2.2.0'
+    api group: 'com.zendesk', name: 'messaging', version: '4.3.1'
 }
+
