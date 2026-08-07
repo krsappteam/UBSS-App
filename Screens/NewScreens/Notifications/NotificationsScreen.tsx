@@ -14,7 +14,9 @@ import {
   Information,
   FileDocument,
   Bell,
+  ArrowLeft,
 } from '../SvgIcons';
+
 import { useAuth } from '../Services/AuthContext';
 import { getNotifications } from '../Services/api';
 
@@ -78,8 +80,15 @@ const NotificationsScreen = ({ navigation }: any) => {
         >
           {/* Header */}
           <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}
+            >
+              <ArrowLeft color="#1a365d" size={24} />
+            </TouchableOpacity>
             <Text style={styles.headerTitle}>Notifications</Text>
           </View>
+
 
           {/* Filter Tabs */}
           <ScrollView
@@ -211,13 +220,26 @@ const styles = StyleSheet.create({
     fontWeight: Typography.weights.bold,
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 16,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+    ...Shadows.sm,
   },
   headerTitle: {
     fontSize: Typography.sizes['2xl'],
     fontWeight: Typography.weights.bold,
     color: Colors.textPrimary,
   },
+
   filterContainer: {
     marginBottom: 20,
   },

@@ -29,8 +29,8 @@ const MainTabs = () => {
       <Tab.Screen name="StudentID" component={StudentIDScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Services" component={ServiceScreen} />
-      <Tab.Screen name="Notifications" component={NotificationsScreen} />
       <Tab.Screen name="Chat" component={ChatScreen} />
+
     </Tab.Navigator>
   );
 };
@@ -47,11 +47,13 @@ const AppNavigator = () => {
         >
           <Stack.Screen name="MainTabs" component={MainTabs} />
           <Stack.Screen name="Timetable" component={TimetableScreen} />
+          <Stack.Screen name="Notifications" component={NotificationsScreen} />
           <Stack.Screen
             name="Login"
             component={LoginScreen}
             options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
           />
+
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

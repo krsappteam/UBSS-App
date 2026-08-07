@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,10 @@ import {
   ScrollView,
   Dimensions,
   ImageBackground,
+  Linking,
 } from 'react-native';
+import SweetToast from 'react-native-sweet-toast';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Typography, BorderRadius, Shadows } from '../DesignSystem';
 import {
@@ -21,6 +24,7 @@ import {
   ChevronForward,
 } from '../SvgIcons';
 import { useAuth } from '../Services/AuthContext';
+
 
 const { width } = Dimensions.get('window');
 const CARD_GAP = 12;
@@ -52,6 +56,7 @@ const exploreItems = [
     subtitle: 'Find Course',
     image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80',
     bgColor: '#1565C0',
+    url: 'https://www.gca.edu.au/courses/',
   },
   {
     id: '2',
@@ -59,12 +64,29 @@ const exploreItems = [
     subtitle: 'Student Support',
     image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600&q=80',
     bgColor: '#2E7D32',
+    url: 'https://www.gca.edu.au/student-support/',
   },
 ];
 
+
 const HomeScreen = ({ navigation }: any) => {
-  const { studentData } = useAuth();
+  const { studentData, isLoggedIn } = useAuth();
   const displayName = studentData?.firstName || 'Student';
+  const sweetToast = useRef<any>(null);
+
+  // Show a persistent "not logged in" toast when the user is not logged in.
+  useEffect(() => {
+    if (!isLoggedIn) {
+      sweetToast.current?.callToast();
+    } else {
+      sweetToast.current?.closeToast();
+    }
+  }, [isLoggedIn]);
+
+  const handleLoginPromptPress = () => {
+    sweetToast.current?.closeToast();
+    navigation.navigate('Login');
+  };
 
   return (
     <View style={styles.container}>
@@ -73,10 +95,17 @@ const HomeScreen = ({ navigation }: any) => {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
+
           {/* Header */}
           <View style={styles.header}>
-            <View>
-              <Text style={styles.greeting}>Hello, {displayName}</Text>
+            <View style={styles.headerTextContainer}>
+              <Text
+                style={styles.greeting}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                Hello, {displayName}
+              </Text>
               <Text style={styles.subtitle}>Student Services</Text>
             </View>
             <TouchableOpacity
@@ -89,6 +118,7 @@ const HomeScreen = ({ navigation }: any) => {
               </View>
             </TouchableOpacity>
           </View>
+
 
           {/* Timetable Card */}
           <TouchableOpacity
@@ -114,7 +144,7 @@ const HomeScreen = ({ navigation }: any) => {
           </TouchableOpacity>
 
           {/* Your Services */}
-          <Text style={styles.sectionTitle}>Your Services</Text>
+          {/* <Text style={styles.sectionTitle}>Your Services</Text>
           <View style={styles.gridRow}>
             {gridCards.map((card) => (
               <TouchableOpacity
@@ -132,13 +162,18 @@ const HomeScreen = ({ navigation }: any) => {
                 <Text style={styles.gridDesc}>{card.desc}</Text>
               </TouchableOpacity>
             ))}
-          </View>
+          </View> */}
 
           {/* Explore Section */}
           <Text style={styles.sectionTitle}>Explore</Text>
           <View style={styles.exploreRow}>
             {exploreItems.map((item) => (
-              <TouchableOpacity key={item.id} style={[styles.exploreCard, { backgroundColor: item.bgColor }]}>
+              <TouchableOpacity
+                key={item.id}
+                style={[styles.exploreCard, { backgroundColor: item.bgColor }]}
+                onPress={() => Linking.openURL(item.url)}
+              >
+
                 <ImageBackground
                   source={{ uri: item.image }}
                   style={styles.exploreImage}
@@ -158,9 +193,31 @@ const HomeScreen = ({ navigation }: any) => {
           </View>
         </ScrollView>
       </SafeAreaView>
+
+      {/* Persistent "not logged in" toast */}
+      <SweetToast
+        onRef={(ref: any) => (sweetToast.current = ref)}
+        position="bottom"
+        positionValue={100}
+        style={styles.loginToastContainer}
+      >
+        <TouchableOpacity
+          style={styles.loginToastContent}
+          activeOpacity={0.8}
+          onPress={handleLoginPromptPress}
+        >
+          <Text style={styles.loginToastIcon}>🔒</Text>
+          <View style={styles.loginToastTextContainer}>
+            <Text style={styles.loginToastTitle}>You are not logged in</Text>
+            <Text style={styles.loginToastSubtitle}>Tap to sign in</Text>
+          </View>
+          <ChevronForward color="#fff" size={18} />
+        </TouchableOpacity>
+      </SweetToast>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -180,11 +237,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 16,
   },
+  headerTextContainer: {
+    flex: 1,
+    marginRight: 12,
+  },
   greeting: {
     fontSize: Typography.sizes['2xl'],
     fontWeight: Typography.weights.bold,
     color: Colors.textPrimary,
   },
+
   subtitle: {
     fontSize: Typography.sizes.base,
     color: Colors.textSecondary,
@@ -348,6 +410,42 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.9)',
     marginRight: 6,
   },
+  loginToastContainer: {
+    backgroundColor: Colors.primary,
+    borderRadius: 16,
+    marginHorizontal: 20,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+  },
+  loginToastContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+  },
+  loginToastIcon: {
+    fontSize: 22,
+    marginRight: 12,
+  },
+  loginToastTextContainer: {
+    flex: 1,
+  },
+  loginToastTitle: {
+    fontSize: Typography.sizes.base,
+    fontWeight: Typography.weights.bold,
+    color: Colors.white,
+  },
+  loginToastSubtitle: {
+    fontSize: Typography.sizes.sm,
+    color: 'rgba(255,255,255,0.8)',
+    marginTop: 2,
+  },
 });
+
 
 export default HomeScreen;

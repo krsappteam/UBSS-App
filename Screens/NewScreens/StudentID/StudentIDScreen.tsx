@@ -192,14 +192,14 @@ const StudentIDScreen = ({ navigation }: any) => {
 
             {/* Contact Details Section */}
             <View style={styles.contactSection}>
-              <View style={styles.contactRow}>
+              {/* <View style={styles.contactRow}>
                 <Text style={styles.contactLabel}>📧 Email</Text>
                 <Text style={styles.contactValue}>{getDisplayEmail(studentInfo) || 'N/A'}</Text>
               </View>
               <View style={styles.contactRow}>
                 <Text style={styles.contactLabel}>📞 Mobile</Text>
                 <Text style={styles.contactValue}>{getDisplayMobile(studentInfo) || 'N/A'}</Text>
-              </View>
+              </View> */}
               <View style={styles.contactRow}>
                 <Text style={styles.contactLabel}>📍 Campus</Text>
                 <Text style={styles.contactValue}>{studentInfo?.campus || 'N/A'}</Text>
@@ -207,7 +207,7 @@ const StudentIDScreen = ({ navigation }: any) => {
             </View>
 
             {/* QR Code Section */}
-            <View style={styles.qrSection}>
+            {/* <View style={styles.qrSection}>
               <View style={styles.qrWrapper}>
                 <QRCode
                   value={qrData}
@@ -220,11 +220,11 @@ const StudentIDScreen = ({ navigation }: any) => {
                 <Text style={styles.qrTitle}>Digital Verification</Text>
                 <Text style={styles.qrDesc}>Scan to verify student identity</Text>
               </View>
-            </View>
+            </View> */}
           </View>
 
           {/* Action Items */}
-          <View style={styles.actionsList}>
+          {/* <View style={styles.actionsList}>
             <TouchableOpacity style={styles.actionItem}>
               <ShareVariant color="#1a365d" size={22} />
               <Text style={styles.actionText}>Share Card</Text>
@@ -236,7 +236,7 @@ const StudentIDScreen = ({ navigation }: any) => {
               <Text style={styles.actionText}>Order Physical Copy</Text>
               <ChevronRight color="#666" size={22} />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </ScrollView>
       </SafeAreaView>
     </View>

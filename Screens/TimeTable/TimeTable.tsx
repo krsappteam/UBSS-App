@@ -146,12 +146,29 @@ const TimetableScreen = ({ navigation }) => {
       </SafeAreaView>
 
       <View style={styles.whiteSheet}>
-        {loading ? (
+        {!isLoggedIn ? (
+          <View style={styles.centerContent}>
+            <View style={styles.loginPromptIcon}>
+              <MaterialCommunityIcons name="lock" size={48} color="#E01842" />
+            </View>
+            <Text style={styles.loginPromptTitle}>Sign In Required</Text>
+            <Text style={styles.loginPromptMessage}>
+              Please sign in to view your timetable
+            </Text>
+            <TouchableOpacity
+              style={styles.loginPromptButton}
+              onPress={() => navigation.navigate('Login')}
+            >
+              <Text style={styles.loginPromptButtonText}>Sign In</Text>
+            </TouchableOpacity>
+          </View>
+        ) : loading ? (
           <View style={styles.centerContent}>
             <ActivityIndicator size="large" color="#E01842" />
             <Text style={styles.loadingText}>Loading timetable...</Text>
           </View>
         ) : classData.length > 0 ? (
+
           <>
             <View style={styles.monthSelector}>
               <TouchableOpacity style={styles.arrowBtn}>
@@ -250,6 +267,44 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
+  loginPromptIcon: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#FCE4EC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  loginPromptTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  loginPromptMessage: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 24,
+    lineHeight: 20,
+    paddingHorizontal: 30,
+  },
+  loginPromptButton: {
+    backgroundColor: '#E01842',
+    paddingHorizontal: 40,
+    paddingVertical: 12,
+    borderRadius: 25,
+    minWidth: 120,
+    alignItems: 'center',
+  },
+  loginPromptButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+
   monthSelector: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 15 },
   arrowBtn: { backgroundColor: '#F0F0F0', borderRadius: 5, padding: 2, marginHorizontal: 15 },
   monthText: { fontSize: 16, color: '#333', fontWeight: '500' },

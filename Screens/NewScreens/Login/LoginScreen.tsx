@@ -75,7 +75,7 @@ const LoginScreen = ({ navigation }: any) => {
                     <Text style={styles.logoEmoji}>🎓</Text>
                   </View>
                   <Text style={styles.logoTitle}>UBSS</Text>
-                  <Text style={styles.logoSubtitle}>University Portal</Text>
+                  <Text style={styles.logoSubtitle}>Use myGCA credentials</Text>
                 </View>
               </View>
 
@@ -130,17 +130,17 @@ const LoginScreen = ({ navigation }: any) => {
                 </TouchableOpacity>
 
                 {/* Divider */}
-                <View style={styles.divider}>
+                {/* <View style={styles.divider}>
                   <View style={styles.dividerLine} />
                   <Text style={styles.dividerText}>or</Text>
                   <View style={styles.dividerLine} />
-                </View>
+                </View> */}
 
                 {/* Google Sign In */}
-                <TouchableOpacity style={styles.googleButton}>
+                {/* <TouchableOpacity style={styles.googleButton}>
                   <Text style={styles.googleIcon}>G</Text>
                   <Text style={styles.googleText}>Sign in with Institutional Google</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </ScrollView>
           </KeyboardAvoidingView>
