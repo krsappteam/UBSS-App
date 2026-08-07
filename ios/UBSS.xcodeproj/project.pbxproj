@@ -255,7 +255,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Apple no longer accepts bitcode in App Store submissions (error 90482).\n# The Zendesk MessagingSDK and ChatSDK frameworks ship with bitcode slices, so we\n# strip bitcode from them after they are embedded into the app bundle.\nBITCODE_STRIP=\"${TOOLCHAIN_DIR}/usr/bin/bitcode_strip\"\nFRAMEWORKS_DIR=\"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfor framework in MessagingSDK ChatSDK; do\n  binary=\"${FRAMEWORKS_DIR}/${framework}.framework/${framework}\"\n  if [ -f \"${binary}\" ]; then\n    echo \"Stripping bitcode from ${framework}\"\n    \"${BITCODE_STRIP}\" -r \"${binary}\" -o \"${binary}\"\n  fi\ndone\n";
+			shellScript = "# Apple no longer accepts bitcode in App Store submissions (error 90482).\n# The Zendesk SDK frameworks ship with bitcode slices, so we strip bitcode from\n# every embedded framework in the app bundle after they are copied in.\nBITCODE_STRIP=\"${TOOLCHAIN_DIR}/usr/bin/bitcode_strip\"\nFRAMEWORKS_DIR=\"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nif [ -d \"${FRAMEWORKS_DIR}\" ]; then\n  for framework_dir in \"${FRAMEWORKS_DIR}\"/*.framework; do\n    [ -d \"${framework_dir}\" ] || continue\n    framework_name=\"$(basename \"${framework_dir}\" .framework)\"\n    binary=\"${framework_dir}/${framework_name}\"\n    if [ -f \"${binary}\" ]; then\n      echo \"Stripping bitcode from ${framework_name}\"\n      \"${BITCODE_STRIP}\" -r \"${binary}\" -o \"${binary}\"\n    fi\n  done\nfi\n";
+
 
 			showEnvVarsInLog = 0;
 		};
