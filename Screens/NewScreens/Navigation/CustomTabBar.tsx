@@ -20,8 +20,9 @@ const CustomTabBar = ({ state, navigation }: any) => {
   const tabs = [
     { label: 'Home', icon: 'home', route: 'Home' },
     { label: 'ID Card', icon: 'student', route: 'StudentID' },
-    { label: 'Search', icon: 'search', route: 'Search' },
+    // { label: 'Search', icon: 'search', route: 'Search' },
     // { label: 'Services', icon: 'services', route: 'Services' },
+    //  { label: 'Notification', icon: 'bell', route: 'Notification' },
     ...(isLoggedIn ? [{ label: 'Logout', icon: 'logout', route: null }] : []),
     { label: 'Chat', icon: 'chat', route: 'Chat' },
   ];
