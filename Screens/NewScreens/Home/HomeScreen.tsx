@@ -14,7 +14,6 @@ import SweetToast from 'react-native-sweet-toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Typography, BorderRadius, Shadows } from '../DesignSystem';
 import {
-  Bell,
   CalendarMonth,
   ClockOutline,
   BookOpen,
@@ -22,7 +21,10 @@ import {
   School,
   ChevronRight,
   ChevronForward,
+  LogoutIcon,
 } from '../SvgIcons';
+
+
 import { useAuth } from '../Services/AuthContext';
 
 
@@ -70,9 +72,10 @@ const exploreItems = [
 
 
 const HomeScreen = ({ navigation }: any) => {
-  const { studentData, isLoggedIn } = useAuth();
-  const displayName = studentData?.firstName || 'Student';
+  const { studentData, isLoggedIn, logout } = useAuth();
+  const displayName = studentData?.firstName || '';
   const sweetToast = useRef<any>(null);
+  const logoutToast = useRef<any>(null);
 
   // Show a persistent "not logged in" toast when the user is not logged in.
   useEffect(() => {
@@ -87,6 +90,26 @@ const HomeScreen = ({ navigation }: any) => {
     sweetToast.current?.closeToast();
     navigation.navigate('Login');
   };
+
+  const handleLogoutPress = () => {
+    // Show logout confirmation toast
+    logoutToast.current?.callToast();
+  };
+
+  const handleConfirmLogout = async () => {
+    logoutToast.current?.closeToast();
+    await logout();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'MainTabs' }],
+    });
+  };
+
+  const handleCancelLogout = () => {
+    logoutToast.current?.closeToast();
+  };
+
+
 
   return (
     <View style={styles.container}>
@@ -104,19 +127,21 @@ const HomeScreen = ({ navigation }: any) => {
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                Hello, {displayName}
+                Hello {displayName}
               </Text>
-              <Text style={styles.subtitle}>Student Services</Text>
+              <Text style={styles.subtitle}>Student</Text>
             </View>
-            <TouchableOpacity
-              style={styles.notificationBtn}
-              onPress={() => navigation.navigate('Notifications')}
-            >
-              <Bell color="#1a365d" size={24} />
-              <View style={styles.notificationBadge}>
-                <Text style={styles.badgeText}>3</Text>
-              </View>
-            </TouchableOpacity>
+            {isLoggedIn && (
+              <TouchableOpacity
+                style={styles.logoutBtn}
+                onPress={handleLogoutPress}
+              >
+                <LogoutIcon color="#1a365d" size={24} />
+              </TouchableOpacity>
+            )}
+
+
+
           </View>
 
 
@@ -214,9 +239,38 @@ const HomeScreen = ({ navigation }: any) => {
           <ChevronForward color="#fff" size={18} />
         </TouchableOpacity>
       </SweetToast>
+
+      {/* Logout Confirmation Toast */}
+      <SweetToast
+        onRef={(ref: any) => (logoutToast.current = ref)}
+        position="bottom"
+        positionValue={100}
+        style={styles.logoutToastContainer}
+      >
+        <View style={styles.logoutToastContent}>
+          <Text style={styles.logoutToastTitle}>
+            Are you sure you want to log out?
+          </Text>
+          <View style={styles.logoutToastActions}>
+            <TouchableOpacity
+              style={[styles.logoutToastButton, styles.cancelButton]}
+              onPress={handleCancelLogout}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.logoutToastButton, styles.confirmButton]}
+              onPress={handleConfirmLogout}
+            >
+              <Text style={styles.confirmButtonText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SweetToast>
     </View>
   );
 };
+
 
 
 const styles = StyleSheet.create({
@@ -252,7 +306,7 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     marginTop: 2,
   },
-  notificationBtn: {
+  logoutBtn: {
     width: 44,
     height: 44,
     borderRadius: 22,
@@ -261,22 +315,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     ...Shadows.sm,
   },
-  notificationBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: Colors.red,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  badgeText: {
-    fontSize: 10,
-    fontWeight: Typography.weights.bold,
-    color: Colors.white,
-  },
+
   timetableCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -413,7 +452,7 @@ const styles = StyleSheet.create({
   loginToastContainer: {
     backgroundColor: Colors.primary,
     borderRadius: 16,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     elevation: 10,
     shadowColor: '#000',
     shadowOpacity: 0.25,
@@ -426,7 +465,8 @@ const styles = StyleSheet.create({
   loginToastContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
   },
   loginToastIcon: {
     fontSize: 22,
@@ -445,7 +485,61 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.8)',
     marginTop: 2,
   },
+  logoutToastContainer: {
+    backgroundColor: Colors.white,
+    borderRadius: 16,
+    marginHorizontal: 20,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+  },
+  logoutToastContent: {
+    alignItems: 'center',
+    padding: 16,
+  },
+  logoutToastTitle: {
+    fontSize: Typography.sizes.base,
+    fontWeight: Typography.weights.bold,
+    color: Colors.textPrimary,
+    textAlign: 'center',
+    marginBottom: 14,
+  },
+  logoutToastActions: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  logoutToastButton: {
+    flex: 1,
+    height: 44,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cancelButton: {
+    backgroundColor: '#f0f0f5',
+    marginRight: 8,
+  },
+  confirmButton: {
+    backgroundColor: '#EF4444',
+    marginLeft: 8,
+  },
+  cancelButtonText: {
+    color: Colors.textPrimary,
+    fontSize: Typography.sizes.base,
+    fontWeight: Typography.weights.bold,
+  },
+  confirmButtonText: {
+    color: Colors.white,
+    fontSize: Typography.sizes.base,
+    fontWeight: Typography.weights.bold,
+  },
 });
+
 
 
 export default HomeScreen;

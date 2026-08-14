@@ -15,7 +15,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Typography, BorderRadius, Shadows } from '../DesignSystem';
-import { PersonOutline, LockClosedOutline, ChevronForward } from '../SvgIcons';
+import { PersonOutline, LockClosedOutline, ChevronForward, EyeOutline, EyeOffOutline } from '../SvgIcons';
+
 import { loginStudent } from '../Services/api';
 import { useAuth } from '../Services/AuthContext';
 
@@ -23,7 +24,9 @@ const LoginScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { setAuth } = useAuth();
+
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
@@ -109,9 +112,20 @@ const LoginScreen = ({ navigation }: any) => {
                     placeholderTextColor={Colors.textLight}
                     value={password}
                     onChangeText={setPassword}
-                    secureTextEntry
+                    secureTextEntry={!showPassword}
                   />
+                  <TouchableOpacity
+                    style={styles.eyeButton}
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOffOutline color="#666" size={20} />
+                    ) : (
+                      <EyeOutline color="#666" size={20} />
+                    )}
+                  </TouchableOpacity>
                 </View>
+
 
                 {/* Sign In Button */}
                 <TouchableOpacity
@@ -260,6 +274,13 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     marginLeft: 10,
   },
+  eyeButton: {
+    padding: 8,
+    marginLeft: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   signInButton: {
     flexDirection: 'row',
     justifyContent: 'center',
